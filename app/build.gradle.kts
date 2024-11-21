@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("com.google.devtools.ksp")
+    id("kotlin-kapt") // Add this to use kapt
 }
 
 android {
@@ -16,6 +18,12 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments["room.schemaLocation"] = "$projectDir/schemas"
+            }
+        }
     }
 
     buildTypes {
@@ -37,11 +45,12 @@ android {
     buildFeatures {
         compose = true
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.2"
+    }
 }
 
 dependencies {
-
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -62,8 +71,18 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    val room_version = "2.6.1"
+    // Room dependencies
+    val room_version = "2.5.2"
+    implementation(libs.androidx.room.runtime)
+    ksp("androidx.room:room-compiler:$room_version")
+    implementation(libs.androidx.room.ktx) // Optional - Kotlin Extensions and Coroutines support
 
-    implementation("androidx.room:room-runtime:$room_version")
-
+    // Jetpack Compose dependencies
+    implementation("androidx.compose.ui:ui:1.7.5")
+    implementation("androidx.compose.material:material:1.7.5")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.7.5")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.7")
+    implementation("androidx.activity:activity-compose:1.9.3")
+    debugImplementation("androidx.compose.ui:ui-tooling:1.7.5")
 }
+
