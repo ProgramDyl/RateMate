@@ -18,9 +18,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ratemate.R
+import com.example.ratemate.ui.theme.UserViewModel
+
+
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(userViewModel: UserViewModel) {
     Column(
         modifier = Modifier
             .fillMaxSize()

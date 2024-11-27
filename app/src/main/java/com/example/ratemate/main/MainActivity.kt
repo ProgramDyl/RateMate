@@ -1,57 +1,54 @@
-package com.example.ratemate
+package com.example.ratemate.main
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Surface
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import com.example.ratemate.home.HomeScreen
-import com.example.ratemate.data.DataScreen
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import com.example.ratemate.AppNavHost
+import com.example.ratemate.data.database.AppDatabase
+import com.example.ratemate.data.model.User
+import com.example.ratemate.data.repository.UserRepository
 import com.example.ratemate.ui.theme.RateMateTheme
+import com.example.ratemate.ui.theme.UserViewModel
+import com.example.ratemate.ui.theme.UserViewModelFactory
+import com.example.ratemate.home.HomeScreen
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
+    private lateinit var userViewModel: UserViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val database = AppDatabase.getDatabase(this)
+        val userRepository = UserRepository(database.userDao())
+        val userViewModelFactory = UserViewModelFactory(userRepository)
+        userViewModel = ViewModelProvider(this, userViewModelFactory).get(UserViewModel::class.java)
+
         setContent {
             RateMateTheme {
-                Surface(color = MaterialTheme.colors.background) {
-                    AppNavigator()
-                }
+                AppNavHost(userViewModel = userViewModel)
             }
         }
-    }
-}
 
-@Composable
-fun AppNavigator() {
-    val navController = rememberNavController()
-
-    Scaffold(
-        bottomBar = { BottomNavBar(navController) }  // Comment out BottomNavBar for now
-    ) { innerPadding ->
-        NavHost(
-            navController = navController,
-            startDestination = "home",
-            modifier = Modifier.padding(innerPadding)
-        ) {
-            composable("home") { HomeScreen() }
-            composable("data") { DataScreen(navController) }
+        // Test inserting a user
+        lifecycleScope.launch {
+            val user = User(firstName = "John", lastName = "Doe", email = "john.doe@example.com")
+            userViewModel.insertUser(user)
         }
-    }
-}
 
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    RateMateTheme {
-        AppNavigator()
+        // Test retrieving a user by email
+        lifecycleScope.launch {
+            userViewModel.getUserByEmail("john.doe@example.com")
+        }
+
+        // Observe the user LiveData
+        userViewModel.user.observe(this, { user ->
+            user?.let {
+                // Handle the retrieved user here
+                println("Retrieved User: ${user.firstName} ${user.lastName}, Email: ${user.email}")
+            }
+        })
     }
 }
