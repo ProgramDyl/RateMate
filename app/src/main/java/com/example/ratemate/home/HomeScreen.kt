@@ -1,85 +1,91 @@
-package com.example.ratemate.home
+package com.example.ratemate
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.*
+import androidx.compose.material.Button
+import androidx.compose.material.Card
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 
 @Composable
-fun HomeScreen(userName: String, icUserPlaceholder: Int) {
+fun HomeScreen(navController: NavHostController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
+        verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            text = "Good morning, $userName!",
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        Box(
-            modifier = Modifier
-                .size(100.dp)
-                .clip(CircleShape)
-                .background(Color.Gray) // Placeholder background color
-        ) {
-            // This box simulates the profile picture
+        GreetingMessage("User")
+        Spacer(modifier = Modifier.height(20.dp))
+        UserAnalytics(data = listOf("data1", "data2", "data3"))
+        Spacer(modifier = Modifier.height(20.dp))
+        TravelInfo(info = listOf("TravelInfo1", "TravelInfo2", "TravelInfo3"))
+        Spacer(modifier = Modifier.height(20.dp))
+        Button(onClick = { navController.navigate("data") }) {
+            Text(text = "Go to Data Screen")
         }
-        Spacer(modifier = Modifier.height(24.dp))
-        Text(
-            text = "Historical Data Graph",
-            fontSize = 18.sp,
-            color = Color.Gray
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = "Overall Performance Metric",
-            fontSize = 18.sp,
-            color = Color.Gray
-        )
-        Spacer(modifier = Modifier.height(24.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceAround
-        ) {
-            IconButton(onClick = { /* Navigate to Home */ }) {
-                Box(
-                    modifier = Modifier
-                        .size(50.dp)
-                        .background(Color.LightGray) // Placeholder color for icons
-                )
-            }
-            IconButton(onClick = { /* Navigate to Currency */ }) {
-                Box(
-                    modifier = Modifier
-                        .size(50.dp)
-                        .background(Color.LightGray) // Placeholder color for icons
-                )
-            }
-            IconButton(onClick = { /* Navigate to Favourites */ }) {
-                Box(
-                    modifier = Modifier
-                        .size(50.dp)
-                        .background(Color.LightGray) // Placeholder color for icons
-                )
-            }
-            IconButton(onClick = { /* Navigate to Convert */ }) {
-                Box(
-                    modifier = Modifier
-                        .size(50.dp)
-                        .background(Color.LightGray) // Placeholder color for icons
+    }
+}
+
+@Composable
+fun GreetingMessage(name: String) {
+    Text(
+        text = "Welcome, $name!",
+        fontSize = 24.sp,
+        modifier = Modifier.padding(8.dp)
+    )
+}
+
+@Composable
+fun UserAnalytics(data: List<String>) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+    ) {
+        data.forEach { item ->
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+                elevation = 4.dp
+            ) {
+                Text(
+                    text = item,
+                    modifier = Modifier.padding(16.dp)
                 )
             }
         }
     }
 }
+
+@Composable
+fun TravelInfo(info: List<String>) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+    ) {
+        items(info) { item ->
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+                elevation = 4.dp
+            ) {
+                Text(
+                    text = item,
+                    modifier = Modifier.padding(16.dp)
+                )
+            }
+        }
+    }
+}
+

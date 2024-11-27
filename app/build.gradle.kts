@@ -63,6 +63,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.play.services.mlkit.text.recognition.common)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -84,5 +85,22 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.7")
     implementation("androidx.activity:activity-compose:1.9.3")
     debugImplementation("androidx.compose.ui:ui-tooling:1.7.5")
+
+    val nav_version = "2.8.4"
+
+        // compose integration
+    implementation("androidx.navigation:navigation-compose:$nav_version")
+
+        //Views/Fragments integration
+    implementation("androidx.navigation:navigation-dynamic-features-fragment:$nav_version")
+
+    //Feature module support for Fragments
+    implementation("androidx.navigation:navigation-dynamic-features-fragment:$nav_version")
+
+    //Testing navigation
+    androidTestImplementation("androidx.navigation:navigation-testing:2.8.4")
+
+    api("androidx.navigation:navigation-fragment-ktx:$nav_version")
+
 }
 
