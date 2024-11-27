@@ -6,19 +6,21 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Card
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
+import com.example.ratemate.R
 
 @Composable
-fun HomeScreen(navController: NavHostController) {
+fun HomeScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -32,11 +34,10 @@ fun HomeScreen(navController: NavHostController) {
         Spacer(modifier = Modifier.height(20.dp))
         TravelInfo(info = listOf("Travel Info 1", "Travel Info 2", "Travel Info 3"))
         Spacer(modifier = Modifier.height(20.dp))
-        NewsHeadlines(news = listOf("Headline 1", "Headline 2", "Headline 3"))
         Spacer(modifier = Modifier.height(20.dp))
 
         NewsHeadlines(news = listOf(
-            newsItem("")
+            NewsItem("Headline1", R.drawable.baseline_newspaper_24)
         ))
     }
 }
@@ -128,6 +129,16 @@ fun NewsHeadlines(news: List<NewsItem>) {
                             Image(
                                 painter = painterResource(id = item.imageRes),
                                 contentDescription = item.headline,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(150.dp)
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(
+                                text = item.headline,
+                                fontSize = 16.sp,
+                                color = Color.Black,
+                                modifier = Modifier.padding(8.dp)
                             )
                         }
                     }
