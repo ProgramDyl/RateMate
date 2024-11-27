@@ -23,7 +23,7 @@ fun BottomNavBar(navController: NavController) {
 
         items.forEach { screen ->
             BottomNavigationItem(
-                icon = { Icon(painterResource(id = R.drawable.ic_home), contentDescription = screen.title) },
+                icon = { Icon(painterResource(id = R.drawable.baseline_home_24), contentDescription = screen.title) },
                 label = { Text(screen.title) },
                 selected = currentRoute == screen.route,
                 onClick = {

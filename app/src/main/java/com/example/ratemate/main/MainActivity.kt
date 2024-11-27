@@ -36,7 +36,7 @@ fun AppNavigator() {
     val navController = rememberNavController()
 
     Scaffold(
-        bottomBar = { /* BottomNavBar(navController) */ }  // Comment out BottomNavBar for now
+        bottomBar = { BottomNavBar(navController) }  // Comment out BottomNavBar for now
     ) { innerPadding ->
         NavHost(
             navController = navController,
