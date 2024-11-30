@@ -8,10 +8,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
+import com.example.ratemate.ui.theme.UserViewModel
+
 
 @Composable
-fun DataScreen(navController: NavHostController) {
+fun DataScreen(navController: UserViewModel) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -21,11 +22,11 @@ fun DataScreen(navController: NavHostController) {
     ) {
         GreetingMessage("User")
         Spacer(modifier = Modifier.height(20.dp))
-        HistoricalDataPlaceholder()
+        HistoricalData()
         Spacer(modifier = Modifier.height(20.dp))
-        OverallPerformancePlaceholder()
+        OverallPerformance()
         Spacer(modifier = Modifier.height(20.dp))
-        TravelSuggestionsPlaceholder()
+        TravelSuggestions()
     }
 }
 
@@ -39,7 +40,7 @@ fun GreetingMessage(name: String) {
 }
 
 @Composable
-fun HistoricalDataPlaceholder() {
+fun HistoricalData() {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -67,7 +68,7 @@ fun HistoricalDataPlaceholder() {
 
 
 @Composable
-fun OverallPerformancePlaceholder() {
+fun OverallPerformance() {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -96,7 +97,7 @@ fun OverallPerformancePlaceholder() {
 
 
 @Composable
-fun TravelSuggestionsPlaceholder() {
+fun TravelSuggestions() {
     Card(
         modifier = Modifier
             .fillMaxWidth()

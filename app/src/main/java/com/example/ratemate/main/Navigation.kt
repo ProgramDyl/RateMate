@@ -11,12 +11,14 @@ import androidx.navigation.compose.rememberNavController
 import com.example.ratemate.home.HomeScreen
 import com.example.ratemate.data.DataScreen
 import com.example.ratemate.ui.theme.UserViewModel
+import com.example.ratemate.home.CurrencyViewModel
 
 @Composable
 fun AppNavHost(
     navController: NavHostController = rememberNavController(),
     startDestination: String = Screen.Home.route,
-    userViewModel: UserViewModel
+    userViewModel: UserViewModel,
+    currencyViewModel: CurrencyViewModel
 ) {
     Scaffold(
         bottomBar = { BottomNavBar(navController) }
@@ -26,8 +28,8 @@ fun AppNavHost(
             startDestination = startDestination,
             modifier = Modifier.padding(innerPadding)
         ) {
-            composable(Screen.Home.route) { HomeScreen(userViewModel) }
-            composable(Screen.Data.route) { DataScreen(navController) }  // Use navController for DataScreen
+            composable(Screen.Home.route) { HomeScreen(currencyViewModel, userViewModel) }
+            composable(Screen.Data.route) { DataScreen(userViewModel) }
             // Add more composable destinations here as needed
         }
     }

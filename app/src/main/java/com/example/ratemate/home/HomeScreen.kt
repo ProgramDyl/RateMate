@@ -19,11 +19,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ratemate.R
 import com.example.ratemate.ui.theme.UserViewModel
-
-
+import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun HomeScreen(userViewModel: UserViewModel) {
+fun HomeScreen(currencyViewModel: CurrencyViewModel, userViewModel: UserViewModel) {
+    val exchangeRates by currencyViewModel.getExchangeRates("USD").observeAsState()
+    val user by userViewModel.user.observeAsState()
+
+    // Set hardcoded favorite currency
+    LaunchedEffect(Unit) {
+        userViewModel.setHardcodedFavoriteCurrency()
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -33,17 +42,46 @@ fun HomeScreen(userViewModel: UserViewModel) {
     ) {
         GreetingMessage("User")
         Spacer(modifier = Modifier.height(20.dp))
+
+        // Current Currency Information
+        exchangeRates?.rates?.get("USD")?.let { rate ->
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ) {
+                Text("Selected Currency: USD", fontSize = 18.sp)
+                Text("Exchange Rate: $rate", fontSize = 18.sp)
+            }
+        } ?: Text("Loading...", color = Color.Gray)
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        // Favorite Currencies Section
+        user?.favourites?.let { favoriteCurrency ->
+            Text("Favorite Currency: $favoriteCurrency", fontSize = 18.sp)
+            exchangeRates?.rates?.get(favoriteCurrency)?.let { rate ->
+                Text("$favoriteCurrency: $rate")
+            }
+        }
+
+        Spacer(modifier = Modifier.height(20.dp))
         UserAnalytics(data = listOf("Data 1", "Data 2", "Data 3"))
         Spacer(modifier = Modifier.height(20.dp))
         TravelInfo(info = listOf("Travel Info 1", "Travel Info 2", "Travel Info 3"))
         Spacer(modifier = Modifier.height(20.dp))
-        Spacer(modifier = Modifier.height(20.dp))
-
         NewsHeadlines(news = listOf(
             NewsItem("Headline1", R.drawable.baseline_newspaper_24)
         ))
     }
 }
+
+
+
+
+
+
+
 
 @Composable
 fun GreetingMessage(name: String) {

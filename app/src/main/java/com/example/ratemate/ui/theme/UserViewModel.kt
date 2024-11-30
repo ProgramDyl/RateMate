@@ -5,29 +5,38 @@ import com.example.ratemate.data.model.User
 import com.example.ratemate.data.repository.UserRepository
 import kotlinx.coroutines.launch
 
-
-class UserViewModel(private val userRepository: UserRepository) : ViewModel() {
+class UserViewModel(private val repository: UserRepository) : ViewModel() {
 
     private val _user = MutableLiveData<User?>()
-    val user: LiveData<User> get() = _user as LiveData<User>
+    val user: LiveData<User?> get() = _user
 
-    fun insertUser(user: User) {
+    fun loadUser(email: String) {
         viewModelScope.launch {
-            userRepository.insertUser(user)
+            _user.value = repository.getUserByEmail(email)
         }
     }
 
-    fun getUserById(id: Int) {
+    fun addFavoriteCurrency(currency: String) {
         viewModelScope.launch {
-            val retrievedUser = userRepository.getUserById(id)
-            _user.postValue(retrievedUser)
+            val currentUser = _user.value
+            currentUser?.let {
+                val updatedUser = it.copy(favourites = currency)
+                repository.updateUser(updatedUser)
+                _user.value = updatedUser
+            }
         }
     }
 
-    fun getUserByEmail(email: String) {
+    fun setHardcodedFavoriteCurrency() {
         viewModelScope.launch {
-            val retrievedUser = userRepository.getUserByEmail(email)
-            _user.postValue(retrievedUser)
+            val user = User(
+                firstName = "John",
+                lastName = "Doe",
+                email = "john.doe@example.com",
+                favourites = "EUR"
+            )
+            repository.insertUser(user)
+            _user.value = user
         }
     }
 }
