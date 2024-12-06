@@ -10,7 +10,7 @@ import com.example.ratemate.ui.screens.CurrencyScreen
 import com.example.ratemate.ui.screens.FavoritesScreen
 import com.example.ratemate.ui.screens.ConvertScreen
 import com.example.ratemate.ui.screens.CurrencyDataScreen
-
+//test
 @Composable
 fun RateMateNavGraph(navController: NavHostController) {
     NavHost(
