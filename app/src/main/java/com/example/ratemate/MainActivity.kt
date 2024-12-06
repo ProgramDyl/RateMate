@@ -19,26 +19,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             RateMateTheme {
                 Surface(color = MaterialTheme.colors.background) {
-                    AppNavigator()
+                    RateMateApp()
                 }
             }
         }
-    }
-}
-
-@Composable
-fun AppNavigator() {
-    val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "home") {
-        composable("home") { HomeScreen(navController) }
-        composable("data") { DataScreen(navController) }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    RateMateTheme {
-        AppNavigator()
     }
 }
