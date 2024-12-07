@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,83 +24,70 @@ import com.example.ratemate.R
 
 @Composable
 fun CurrencyCard(
-    flag: Painter, // The image or flag icon
-    countryName: String, // Country's name
-    exchangeRate: String, // Exchange rate value
-    percentageChange: String, // Percentage change
-    isPositive: Boolean, // Whether the percentage is positive or negative
-    isFavorited: Boolean, // Whether the item is favorited
-    onFavoriteClick: () -> Unit // Callback for favorite icon click
+    currencyCode: String,
+    exchangeRate: String,
+    isPositive: Boolean,
+    percentageChange: String,
+    isFavorited: Boolean,
+    onFavoriteClick: () -> Unit,
+    onCurrencyClick: () -> Unit // Added to handle card click
 ) {
+    val context = LocalContext.current
+    val flagResource = context.resources.getIdentifier(
+        "flag_${currencyCode.lowercase()}",
+        "drawable",
+        context.packageName
+    )
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
             .background(Color.White, shape = RoundedCornerShape(12.dp))
-            .clickable { /* Click action for the card */ }
+            .clickable { onCurrencyClick() } // Navigate to CurrencyDataScreen
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Country Flag
+        // Country flag
         Image(
-            painter = flag,
-            contentDescription = "$countryName flag",
+            painter = painterResource(id = if (flagResource != 0) flagResource else R.drawable.flag_placeholder),
+            contentDescription = "$currencyCode flag",
             modifier = Modifier
                 .size(40.dp)
-                .background(Color.Gray, shape = CircleShape),
-            contentScale = ContentScale.Crop
+//                .background(Color.LightGray, shape = CircleShape) // Placeholder styling
         )
-
         Spacer(modifier = Modifier.width(12.dp))
 
-        // Country Name and Exchange Rate
-        Column(
-            modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.Center
-        ) {
+        // Currency details
+        Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = countryName,
+                text = currencyCode,
                 fontWeight = FontWeight.Bold,
-                fontSize = 16.sp,
-                color = Color.Black
+                fontSize = 16.sp
             )
-            Text(
-                text = exchangeRate,
-                fontSize = 14.sp,
-                color = Color.Gray
-            )
-        }
-
-        // Percentage Change
-        Box(
-            modifier = Modifier
-                .background(
-                    if (isPositive) Color(0xFFDFF6DD) else Color(0xFFFFE6E6),
-                    shape = RoundedCornerShape(4.dp)
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = exchangeRate,
+                    fontSize = 14.sp
                 )
-                .padding(horizontal = 8.dp, vertical = 4.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = percentageChange,
-                color = if (isPositive) Color(0xFF228B22) else Color(0xFFFF0000),
-                fontWeight = FontWeight.Bold,
-                fontSize = 12.sp
-            )
+//                Spacer(modifier = Modifier.width(25.dp))
+            }
         }
 
-        Spacer(modifier = Modifier.width(12.dp))
-
-        // Favorite Icon
+        Text(
+            text = percentageChange,
+            fontSize = 12.sp,
+            color = if (isPositive) Color.Green else Color.Red
+        )
+        // Favorite icon
         Icon(
             painter = painterResource(
-                id = if (isFavorited) R.drawable.flag_canada else R.drawable.flag_canada
+                id = if (isFavorited) R.drawable.favorite_filled else R.drawable.favorite_outline
             ),
             contentDescription = "Favorite Icon",
             modifier = Modifier
                 .size(24.dp)
-                .clickable { onFavoriteClick() },
-            tint = if (isFavorited) Color.Red else Color.Gray
+                .clickable { onFavoriteClick() } // Handle favorite toggle
         )
     }
 }
@@ -108,12 +96,12 @@ fun CurrencyCard(
 @Composable
 fun CurrencyCardPreview() {
     CurrencyCard(
-        flag = painterResource(id = R.drawable.flag_canada),
-        countryName = "Canadian Dollars",
-        exchangeRate = "0.7199",
-        percentageChange = "+3.87%",
+        currencyCode = "USD",
+        exchangeRate = "1.2345",
         isPositive = true,
+        percentageChange = "+0.45%",
         isFavorited = false,
-        onFavoriteClick = {}
+        onFavoriteClick = { /* Toggle favorite */ },
+        onCurrencyClick = { /* Navigate to details */ }
     )
 }

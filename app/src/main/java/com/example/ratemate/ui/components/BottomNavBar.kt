@@ -1,53 +1,56 @@
 package com.example.ratemate.ui.components
 
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.ratemate.ui.navigation.BottomNavItem
 
 @Composable
-fun BottomNavBar(navController: NavController) {
-    val items = listOf(
-        BottomNavItem.Home,
-        BottomNavItem.Currency,
-        BottomNavItem.Favorites,
-        BottomNavItem.Convert
-    )
-
+fun BottomNavBar(
+    items: List<BottomNavItem>,
+    navController: NavController,
+    onItemClick: (BottomNavItem) -> Unit
+) {
     BottomNavigation {
-        val currentBackStackEntry = navController.currentBackStackEntryAsState()
-        val currentDestination = currentBackStackEntry.value?.destination
-
         items.forEach { item ->
             BottomNavigationItem(
-                icon = { Icon(imageVector = item.icon, contentDescription = item.label) },
-                label = { Text(text = item.label) },
-                selected = currentDestination?.route == item.route,
-                onClick = {
-                    if (currentDestination?.route != item.route) {
-                        navController.navigate(item.route) {
-                            popUpTo("bottom_navigation") {
-                                saveState = true
-                            }
-                            restoreState = true
-                            launchSingleTop = true
-                        }
-                    }
-                }
+                icon = {
+                    Icon(
+                        painter = painterResource(id = item.iconRes),
+                        contentDescription = item.label,
+                        modifier = Modifier.size(30.dp) // Adjust size here
+                    )
+                },
+                label = { Text(item.label) },
+                selected = navController.currentDestination?.route == item.route,
+                onClick = { onItemClick(item) }
             )
         }
     }
 }
 
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun BottomNavBarPreview() {
     val navController = rememberNavController()
 
-    BottomNavBar(navController = navController)
+    BottomNavBar(
+        items = listOf(
+            BottomNavItem.Home,
+            BottomNavItem.Currency,
+            BottomNavItem.Favorites,
+            BottomNavItem.Convert
+        ),
+        navController = navController,
+        onItemClick = {}
+    )
 }

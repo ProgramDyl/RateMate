@@ -16,6 +16,10 @@ interface CurrencyDao {
     @Query("SELECT * FROM currencies WHERE isFavorited = 1")
     fun getFavoritedCurrencies(): Flow<List<CurrencyEntity>>
 
+    @Query("SELECT * FROM currencies WHERE currencyCode IN (:currencyCodes)")
+    fun getSpecificCurrencies(currencyCodes: List<String>): Flow<List<CurrencyEntity>>
+
+
     @Query("UPDATE currencies SET isFavorited = :isFavorited WHERE currencyCode = :currencyCode")
     suspend fun updateFavoriteStatus(currencyCode: String, isFavorited: Boolean): Int
 

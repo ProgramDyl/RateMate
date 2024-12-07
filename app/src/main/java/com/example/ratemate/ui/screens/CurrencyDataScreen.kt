@@ -6,13 +6,15 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 
 @Composable
-fun CurrencyDataScreen() {
-    Box(
+fun CurrencyDataScreen(currencyCode: String) {
+    // Display the currency-specific data
+    Text(
+        text = "Details for $currencyCode",
         modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(text = "Currency Data Screen Placeholder")
-    }
+        textAlign = TextAlign.Center
+    )
+    // Fetch and display additional data specific to this currency if needed
 }

@@ -16,17 +16,17 @@ import com.example.ratemate.data.api.ExchangeRatesViewModel
 import com.example.ratemate.ui.theme.RateMateTheme
 
 class MainActivity : ComponentActivity() {
-
-    private val viewModel: ExchangeRatesViewModel by viewModels()
+    private lateinit var viewModel: ExchangeRatesViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Initialize the ViewModel
+        viewModel = ExchangeRatesViewModel(application)
+        viewModel.fetchAndSaveExchangeRates() // Fetch data on app startup
+
         setContent {
-            RateMateTheme {
-                Surface(color = MaterialTheme.colors.background) {
-                    RateMateApp()
-                }
-            }
+            RateMateApp()
         }
     }
 }

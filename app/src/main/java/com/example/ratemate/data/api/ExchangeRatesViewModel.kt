@@ -1,6 +1,7 @@
 package com.example.ratemate.data.api
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -24,10 +25,19 @@ class ExchangeRatesViewModel(application: Application) : AndroidViewModel(applic
 
     val favorites: Flow<List<CurrencyEntity>> = repository.getFavoritedCurrencies()
 
+    val specificCurrencies: Flow<List<CurrencyEntity>> = repository.getSpecificCurrencies(
+        listOf("USD", "GBP", "JPY", "CAD", "CHF", "AUD", "CNY", "HKD", "NZD", "SEK", "KRW", "SGD", "NOK", "INR", "MXN") // Define your specific currencies here
+    )
+
+
     fun toggleFavoriteStatus(currencyCode: String, isFavorited: Boolean) {
         viewModelScope.launch {
             repository.updateFavoriteStatus(currencyCode, isFavorited)
         }
+    }
+
+    fun getSpecificCurrencies(currencyCodes: List<String>): Flow<List<CurrencyEntity>> {
+        return repository.getSpecificCurrencies(currencyCodes)
     }
 
     fun fetchAndSaveExchangeRates() {
@@ -35,6 +45,7 @@ class ExchangeRatesViewModel(application: Application) : AndroidViewModel(applic
             try {
                 if (repository.isDatabaseEmpty()) {
                     val response = ApiClient.apiService.getExchangeRates()
+                    Log.d("ExchangeRateViewModel", "Getting Rates: ${response}")
                     val currencyEntities = response.rates.map { (currencyCode, rate) ->
                         CurrencyEntity(currencyCode = currencyCode, rate = rate, isFavorited = false)
                     }

@@ -11,6 +11,11 @@ class CurrencyRepository(private val currencyDao: CurrencyDao) {
 
     fun getFavoritedCurrencies(): Flow<List<CurrencyEntity>> = currencyDao.getFavoritedCurrencies()
 
+    fun getSpecificCurrencies(currencyCodes: List<String>): Flow<List<CurrencyEntity>> {
+        return currencyDao.getSpecificCurrencies(currencyCodes)
+    }
+
+
     suspend fun updateFavoriteStatus(currencyCode: String, isFavorited: Boolean) {
         currencyDao.updateFavoriteStatus(currencyCode, isFavorited)
     }
