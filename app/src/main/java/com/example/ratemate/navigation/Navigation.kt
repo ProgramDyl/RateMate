@@ -8,10 +8,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.ratemate.home.HomeScreen
+import com.example.ratemate.screens.HomeScreen
 import com.example.ratemate.data.DataScreen
 import com.example.ratemate.ui.theme.UserViewModel
 import com.example.ratemate.home.CurrencyViewModel
+import com.example.ratemate.screens.Screen
 
 @Composable
 fun AppNavHost(

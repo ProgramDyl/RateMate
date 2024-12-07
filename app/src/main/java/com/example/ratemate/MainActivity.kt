@@ -1,19 +1,18 @@
-package com.example.ratemate.main
+package com.example.ratemate
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.lifecycle.ViewModelProvider
-import com.example.ratemate.AppNavHost
 import com.example.ratemate.data.database.AppDatabase
-import com.example.ratemate.data.repository.UserRepository
+import com.example.ratemate.data.database.UserRepository
 import com.example.ratemate.ui.theme.RateMateTheme
 import com.example.ratemate.ui.theme.UserViewModel
 import com.example.ratemate.ui.theme.UserViewModelFactory
 import com.example.ratemate.home.CurrencyViewModel
 import com.example.ratemate.home.CurrencyViewModelFactory
-import com.example.ratemate.data.CurrencyApiService
-import com.example.ratemate.data.RetrofitInstance
+import com.example.ratemate.data.api.CurrencyApiService
+import com.example.ratemate.data.api.RetrofitInstance
 import com.example.ratemate.data.repository.CurrencyRepository
 
 class MainActivity : ComponentActivity() {

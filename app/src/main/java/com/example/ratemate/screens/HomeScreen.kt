@@ -1,4 +1,4 @@
-package com.example.ratemate.home
+package com.example.ratemate.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -21,7 +21,7 @@ import com.example.ratemate.R
 import com.example.ratemate.ui.theme.UserViewModel
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.ratemate.home.CurrencyViewModel
 
 @Composable
 fun HomeScreen(currencyViewModel: CurrencyViewModel, userViewModel: UserViewModel) {

@@ -1,6 +1,6 @@
 package com.example.ratemate.data.repository
 
-import com.example.ratemate.data.CurrencyApiService
+import com.example.ratemate.data.api.CurrencyApiService
 import com.example.ratemate.data.model.ExchangeRatesResponse
 
 class CurrencyRepository(private val apiService: CurrencyApiService) {

@@ -2,7 +2,7 @@ package com.example.ratemate.ui.theme
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.ratemate.data.repository.UserRepository
+import com.example.ratemate.data.database.UserRepository
 
 class UserViewModelFactory(private val userRepository: UserRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

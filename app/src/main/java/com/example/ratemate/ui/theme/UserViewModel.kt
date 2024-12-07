@@ -1,8 +1,8 @@
 package com.example.ratemate.ui.theme
 
 import androidx.lifecycle.*
-import com.example.ratemate.data.model.User
-import com.example.ratemate.data.repository.UserRepository
+import com.example.ratemate.data.database.User
+import com.example.ratemate.data.database.UserRepository
 import kotlinx.coroutines.launch
 
 class UserViewModel(private val repository: UserRepository) : ViewModel() {

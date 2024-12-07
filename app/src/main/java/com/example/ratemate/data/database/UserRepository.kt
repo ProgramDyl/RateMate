@@ -1,7 +1,6 @@
-package com.example.ratemate.data.repository
+package com.example.ratemate.data.database
 
 import com.example.ratemate.data.dao.UserDao
-import com.example.ratemate.data.model.User
 
 class UserRepository(private val userDao: UserDao) {
 

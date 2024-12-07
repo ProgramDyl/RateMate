@@ -1,4 +1,4 @@
-package com.example.ratemate.data.model
+package com.example.ratemate.data.database
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

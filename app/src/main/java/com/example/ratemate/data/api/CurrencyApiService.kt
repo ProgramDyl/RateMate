@@ -1,4 +1,4 @@
-package com.example.ratemate.data
+package com.example.ratemate.data.api
 
 import com.example.ratemate.data.model.ExchangeRatesResponse
 import retrofit2.http.GET

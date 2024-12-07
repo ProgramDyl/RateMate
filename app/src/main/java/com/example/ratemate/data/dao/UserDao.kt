@@ -1,7 +1,7 @@
 package com.example.ratemate.data.dao
 
 import androidx.room.*
-import com.example.ratemate.data.model.User
+import com.example.ratemate.data.database.User
 
 @Dao
 interface UserDao {

@@ -1,4 +1,4 @@
-package com.example.ratemate.data
+package com.example.ratemate.data.api
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
