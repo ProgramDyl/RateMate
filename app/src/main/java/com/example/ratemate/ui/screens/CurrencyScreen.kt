@@ -8,6 +8,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.ratemate.ui.components.CurrencyCard
@@ -17,30 +18,30 @@ import com.example.ratemate.R
 
 @Composable
 fun CurrencyScreen(viewModel: ExchangeRatesViewModel = viewModel()) {
+    // Trigger data fetching when the screen is first displayed
+    LaunchedEffect(Unit) {
+        viewModel.fetchAndSaveExchangeRates()
+    }
+
+    // Collect data from the ViewModel
     val currencies = viewModel.currencies.collectAsState(initial = emptyList())
-    val error = viewModel.error.collectAsState()
 
-    // Fetch data on screen load
-    viewModel.fetchAndSaveExchangeRates()
-
-    if (currencies.value.isNotEmpty()) {
-        LazyColumn {
-            currencies.value.forEach { currencyEntity ->
-                item {
-                    CurrencyCard(
-                        flag = painterResource(id = R.drawable.flag_canada), // Replace with actual flags
-                        countryName = currencyEntity.currencyCode,
-                        exchangeRate = currencyEntity.rate.toString(),
-                        percentageChange = "+0.00%", // Placeholder for now
-                        isPositive = true,
-                        isFavorited = false,
-                        onFavoriteClick = {}
-                    )
-                }
+    // Display the data in a LazyColumn
+    LazyColumn {
+        currencies.value.forEach { currency ->
+            item {
+                CurrencyCard(
+                    flag = painterResource(id = R.drawable.flag_canada), // Replace with dynamic flag resource
+                    countryName = currency.currencyCode,
+                    exchangeRate = currency.rate.toString(),
+                    isPositive = true, // Placeholder for now
+                    percentageChange = "+0.00%", // Placeholder for now
+                    isFavorited = currency.isFavorited,
+                    onFavoriteClick = {
+                        viewModel.toggleFavoriteStatus(currency.currencyCode, !currency.isFavorited)
+                    }
+                )
             }
         }
-    } else if (error.value != null) {
-        // Display error
-        Text(text = "Error: ${error.value}")
     }
 }

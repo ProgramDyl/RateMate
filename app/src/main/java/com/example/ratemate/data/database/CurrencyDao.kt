@@ -11,11 +11,21 @@ import kotlinx.coroutines.flow.Flow
 interface CurrencyDao {
 
     @Query("SELECT * FROM currencies")
-    fun getAllCurrencies(): Flow<List<CurrencyEntity>> // Retrieve all currencies as a Flow
+    fun getAllCurrencies(): Flow<List<CurrencyEntity>>
+
+    @Query("SELECT * FROM currencies WHERE isFavorited = 1")
+    fun getFavoritedCurrencies(): Flow<List<CurrencyEntity>>
+
+    @Query("UPDATE currencies SET isFavorited = :isFavorited WHERE currencyCode = :currencyCode")
+    suspend fun updateFavoriteStatus(currencyCode: String, isFavorited: Boolean): Int
+
+    @Query("SELECT COUNT(*) FROM currencies")
+    suspend fun countCurrencies(): Int
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(currencies: List<CurrencyEntity>) // Insert or update multiple currencies
+    suspend fun insertAll(currencies: List<CurrencyEntity>)
 
     @Query("DELETE FROM currencies")
-    suspend fun clearAll() // Clear all data from the table
+    suspend fun clearAll()
 }
+

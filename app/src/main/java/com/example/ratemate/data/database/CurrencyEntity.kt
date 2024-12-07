@@ -5,6 +5,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "currencies")
 data class CurrencyEntity(
-    @PrimaryKey val currencyCode: String, // E.g., "USD", "EUR"
-    val rate: Double // Exchange rate for the currency
+    @PrimaryKey val currencyCode: String,
+    val rate: Double,
+    var isFavorited: Boolean = false // Optional column for favorites
 )
