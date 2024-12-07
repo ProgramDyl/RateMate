@@ -17,20 +17,20 @@ import com.example.ratemate.R
 
 @Composable
 fun CurrencyScreen(viewModel: ExchangeRatesViewModel = viewModel()) {
-    val exchangeRates = viewModel.exchangeRates.collectAsState()
+    val currencies = viewModel.currencies.collectAsState(initial = emptyList())
     val error = viewModel.error.collectAsState()
 
-    // Fetch data when the screen loads
-    viewModel.fetchExchangeRates()
+    // Fetch data on screen load
+    viewModel.fetchAndSaveExchangeRates()
 
-    if (exchangeRates.value.isNotEmpty()) {
+    if (currencies.value.isNotEmpty()) {
         LazyColumn {
-            exchangeRates.value.forEach { (currency, rate) ->
+            currencies.value.forEach { currencyEntity ->
                 item {
                     CurrencyCard(
-                        flag = painterResource(id = R.drawable.flag_canada), // Replace with actual flag resources
-                        countryName = currency,
-                        exchangeRate = rate.toString(),
+                        flag = painterResource(id = R.drawable.flag_canada), // Replace with actual flags
+                        countryName = currencyEntity.currencyCode,
+                        exchangeRate = currencyEntity.rate.toString(),
                         percentageChange = "+0.00%", // Placeholder for now
                         isPositive = true,
                         isFavorited = false,
