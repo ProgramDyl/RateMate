@@ -6,10 +6,6 @@ import retrofit2.http.Query
 
 interface ExchangeRatesApi {
 
-    @GET("latest")
-    suspend fun getExchangeRates(
-        @Query("access_key") accessKey: String,
-        @Query("base") base: String = "EUR", // Default base currency is EUR
-        @Query("symbols") symbols: String? = null // Optional symbols parameter
-    ): Response<ExchangeRatesResponse>
+    @GET("latest?access_key=baaeaff430616fe496d196d12c6587a0")
+    suspend fun getExchangeRates(): ExchangeRatesResponse
 }
