@@ -13,22 +13,23 @@
         android:theme="@style/Theme.RateMate"
         tools:targetApi="31">
         <activity
-            android:name=".settings.SettingsActivity"
+            android:name=".ui.screens.SettingsActivity"
             android:exported="false" />
         <activity
-            android:name=".convert.ConvertActivity"
+            android:name=".ui.screens.ConvertActivity"
             android:exported="false" />
         <activity
-            android:name=".currency.CurrencyActivity"
+            android:name=".ui.screens.CurrencyActivity"
             android:exported="false" />
         <activity
-            android:name=".favourites.FavouritesActivity"
+            android:name=".ui.screens.FavouritesActivity"
             android:exported="false" />
         <activity
             android:name=".data.DataActivity"
             android:exported="false" />
         <activity
             android:name=".home.HomeActivity"
+            android:theme="@style/Theme.AppCompat"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

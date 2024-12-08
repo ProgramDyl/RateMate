@@ -1,0 +1,58 @@
+# Project Overview
+
+## Purpose
+
+The RateMate application calculates currency exchange rates for a wide range
+of global currencies based on real-time market data. User can view current
+rates and historical data for currency pairs. A standout feature of the app
+is the ability to select multiple currency pairs simultaneously, offering a
+comprehensive understanding of each pair's value and the respective exchange
+rates. This app also stores currency data, enabling offline functionality.
+
+## Technologies used
+
+- **Programming Languages:** Kotlin
+- **Architecture Components:** Jetpack Compose, Room, ViewModel, LiveData
+- **Libraries:** Androidx, Material Components, Kotlin CoRoutines
+- **Database:** Room
+- **API:** ExchangeRates API
+
+## Home Screen Implementation
+
+### 1. Setting Up The Project
+
+Dependencies: We ensured that all necessary dependencies for Jetpack Compose, Room, and other AndroidX components were included in the build.gradle.kts file.
+
+```kotlin
+// Key dependencies for Jetpack Compose and Room
+val composeVersion = "1.5.2"
+val room_version = "2.5.2"
+
+dependencies {
+    implementation("androidx.compose.ui:ui:$composeVersion")
+    implementation("androidx.compose.material:material:$composeVersion")
+    implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.2")
+    implementation("androidx.activity:activity-compose:1.6.2")
+    debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
+    implementation("androidx.room:room-runtime:$room_version")
+    kapt("androidx.room:room-compiler:$room_version")
+    implementation("androidx.room:room-ktx:$room_version")
+}
+```
+
+### Room Database Setup
+
+**Entity:** We defined the `User` entity to represent users in our Room database
+
+```kotlin
+
+@Entity(tableName = "users")
+data class User(
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    val firstName: String,
+    val lastName: String,
+    val email: String,
+    val profilePicture: String?
+)
+```
