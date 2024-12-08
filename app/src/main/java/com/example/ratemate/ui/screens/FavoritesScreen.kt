@@ -13,26 +13,28 @@ import com.example.ratemate.ui.components.CurrencyCard
 
 @Composable
 fun FavoritesScreen(viewModel: ExchangeRatesViewModel = viewModel(), navController: NavHostController) {
-    // Specify the type explicitly
-    val favoritesWithChange = viewModel.calculatePercentageChange().collectAsState(initial = emptyList<CurrencyWithChange>())
+    // Collect the currencies with change and filter for favorites
+    val favoritesWithChange = viewModel.currenciesWithChange.collectAsState(initial = emptyList())
 
     LazyColumn {
-        favoritesWithChange.value.filter { it.isFavorited }.forEach { currency: CurrencyWithChange -> // Specify type explicitly
-            item {
-                CurrencyCard(
-                    currencyCode = currency.currencyCode,
-                    exchangeRate = currency.rate.toString(),
-                    isPositive = currency.isPositive,
-                    percentageChange = currency.percentageChange,
-                    isFavorited = currency.isFavorited,
-                    onFavoriteClick = {
-                        viewModel.toggleFavoriteStatus(currency.currencyCode, !currency.isFavorited)
-                    },
-                    onCurrencyClick = {
-                        navController.navigate("currencyData/${currency.currencyCode}")
-                    }
-                )
+        favoritesWithChange.value
+            .filter { it.isFavorited } // Show only favorited currencies
+            .forEach { currency ->
+                item {
+                    CurrencyCard(
+                        currencyCode = currency.currencyCode,
+                        exchangeRate = currency.rate.toString(),
+                        isPositive = currency.isPositive,
+                        percentageChange = currency.percentageChange,
+                        isFavorited = currency.isFavorited,
+                        onFavoriteClick = {
+                            viewModel.toggleFavoriteStatus(currency.currencyCode, !currency.isFavorited)
+                        },
+                        onCurrencyClick = {
+                            navController.navigate("currencyData/${currency.currencyCode}")
+                        }
+                    )
+                }
             }
-        }
     }
 }
