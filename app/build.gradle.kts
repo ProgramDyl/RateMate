@@ -113,5 +113,7 @@ dependencies {
 
     api("androidx.navigation:navigation-fragment-ktx:$nav_version")
 
+    //flags
+    implementation ("com.github.murgupluoglu:flagkit-android:1.0.2")
 }
 

@@ -31,6 +31,7 @@ fun CurrencyScreen(viewModel: ExchangeRatesViewModel = viewModel()) {
         currencies.value.forEach { currency ->
             item {
                 CurrencyCard(
+                    //TODO: change flag depending on which currency is being converted
                     flag = painterResource(id = R.drawable.flag_canada), // Replace with dynamic flag resource
                     countryName = currency.currencyCode,
                     exchangeRate = currency.rate.toString(),
