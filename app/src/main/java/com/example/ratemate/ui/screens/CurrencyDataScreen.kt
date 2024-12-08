@@ -16,3 +16,9 @@ fun CurrencyDataScreen() {
         Text(text = "Currency Data Screen Placeholder")
     }
 }
+
+
+//NOTES:
+// show currency conversions between chosen currency and 4 popular ones I choose
+
+// click circle on card to go to specific countries data screen.
