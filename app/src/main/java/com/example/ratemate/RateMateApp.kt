@@ -20,4 +20,5 @@ import com.example.ratemate.ui.navigation.RateMateNavHost
 @Composable
 fun RateMateApp(navController: NavHostController = rememberNavController()) {
     RateMateNavHost()
+
 }

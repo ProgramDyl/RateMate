@@ -1,5 +1,7 @@
 package com.example.ratemate.data.api
 
+
+// RESPONSE FORMAT
 data class ExchangeRatesResponse(
     val success: Boolean,
     val timestamp: Long,
