@@ -20,7 +20,7 @@ class ExchangeRatesViewModel(application: Application) : AndroidViewModel(applic
     private val specificCurrencyCodes = listOf("USD", "GBP", "JPY", "CAD", "CHF", "AUD", "CNY", "HKD", "NZD", "SEK", "KRW", "SGD", "NOK", "INR", "MXN")
 
     // GET ALL CURRENCIES FROM BACKEND (CURRENT RATES)
-//    val currencies: Flow<List<CurrencyEntity>> = repository.getAllCurrencies()
+    val currencies: Flow<List<CurrencyEntity>> = repository.getAllCurrencies()
 
     // GET CURRENT RATES FOR SPECIFIC CURRENCIES (LISTED ABOVE)
     val currentRates = repository.getSpecificCurrencies(specificCurrencyCodes)

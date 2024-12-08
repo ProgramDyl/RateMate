@@ -42,33 +42,33 @@ fun HomeScreen(
             CustomText(text = "Popular")
 
             val currencies = viewModel.currencies.collectAsState(initial = emptyList())
-            LazyColumn {
-                currencies.value.forEach { currency ->
-                    if (currency.currencyCode == "CAD" || currency.currencyCode == "USD" || currency.currencyCode == "CNY" || currency.currencyCode == "IDR") {
-                        item {
-                            val context = LocalContext.current
-                            val flagResource = FlagKit.getResId(context, currencyToCountryCode(currency.currencyCode))
-
-                            val percentageChange = calculatePercentageChange(currency.rate)
-
-                            CurrencyCard(
-                                flag = painterResource(id = flagResource),
-                                countryName = currency.currencyCode,
-                                exchangeRate = currency.rate.toString(),
-                                isPositive = percentageChange.startsWith("+"),
-                                percentageChange = percentageChange,
-                                isFavorited = currency.isFavorited,
-                                onFavoriteClick = {
-                                    viewModel.toggleFavoriteStatus(
-                                        currency.currencyCode,
-                                        !currency.isFavorited
-                                    )
-                                }
-                            )
-                        }
-                    }
-                }
-            }
+//            LazyColumn {
+//                currencies.value.forEach { currency ->
+//                    if (currency.currencyCode == "CAD" || currency.currencyCode == "USD" || currency.currencyCode == "CNY" || currency.currencyCode == "IDR") {
+//                        item {
+//                            val context = LocalContext.current
+//                            val flagResource = FlagKit.getResId(context, currencyToCountryCode(currency.currencyCode))
+//
+//                            val percentageChange = calculatePercentageChange(currency.rate)
+//
+//                            CurrencyCard(
+//                                flag = painterResource(id = flagResource),
+//                                countryName = currency.currencyCode,
+//                                exchangeRate = currency.rate.toString(),
+//                                isPositive = percentageChange.startsWith("+"),
+//                                percentageChange = percentageChange,
+//                                isFavorited = currency.isFavorited,
+//                                onFavoriteClick = {
+//                                    viewModel.toggleFavoriteStatus(
+//                                        currency.currencyCode,
+//                                        !currency.isFavorited
+//                                    )
+//                                }
+//                            )
+//                        }
+//                    }
+//                }
+//            }
 
             // Add the news section using StyledNewsCard
             LazyRow(
