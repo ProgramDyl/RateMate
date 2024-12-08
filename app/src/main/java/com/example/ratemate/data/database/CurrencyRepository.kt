@@ -47,7 +47,7 @@ class CurrencyRepository(private val currencyDao: CurrencyDao) {
     }
 
     // GET HISTORICAL DATA FOR SPECIFIC CURRENCIES (LIST)
-    fun getSpecificHistoricalRates(currencyCodes: List<String>, date: String): Flow<List<HistoricalDataEntity>> {
+    fun getSpecificHistoricalRates(currencyCodes: String, date: String): Flow<List<HistoricalDataEntity>> {
         return currencyDao.getSpecificHistoricalRates(currencyCodes, date)
     }
 
