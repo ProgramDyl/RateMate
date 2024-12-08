@@ -24,6 +24,7 @@ class MainActivity : ComponentActivity() {
         // Initialize the ViewModel
         viewModel = ExchangeRatesViewModel(application)
         viewModel.fetchAndSaveExchangeRates() // Fetch data on app startup
+        viewModel.fetchAndSaveHistoricalData()
 
         setContent {
             RateMateApp()

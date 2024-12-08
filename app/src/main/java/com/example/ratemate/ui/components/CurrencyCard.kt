@@ -76,9 +76,12 @@ fun CurrencyCard(
 
         Text(
             text = percentageChange,
-            fontSize = 12.sp,
+            fontSize = 16.sp,
             color = if (isPositive) Color.Green else Color.Red
         )
+
+        Spacer(modifier = Modifier.width(12.dp))
+
         // Favorite icon
         Icon(
             painter = painterResource(

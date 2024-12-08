@@ -6,7 +6,7 @@ import androidx.room.RoomDatabase
 import com.example.ratemate.data.database.CurrencyEntity
 import android.content.Context
 
-@Database(entities = [CurrencyEntity::class], version = 2, exportSchema = false)
+@Database(entities = [CurrencyEntity::class, HistoricalDataEntity::class], version = 3, exportSchema = false)
 abstract class CurrencyDatabase : RoomDatabase() {
 
     abstract fun currencyDao(): CurrencyDao

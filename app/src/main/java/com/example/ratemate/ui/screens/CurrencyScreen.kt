@@ -10,19 +10,20 @@ import com.example.ratemate.data.api.ExchangeRatesViewModel
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavHostController
 import com.example.ratemate.R
+import com.example.ratemate.data.database.CurrencyWithChange
 
 @Composable
-fun CurrencyScreen(navController: NavHostController, viewModel: ExchangeRatesViewModel = viewModel()) {
-    val specificCurrencies = viewModel.specificCurrencies.collectAsState(initial = emptyList())
+fun CurrencyScreen(viewModel: ExchangeRatesViewModel = viewModel(), navController: NavHostController) {
+    val currenciesWithChange = viewModel.currenciesWithChange.collectAsState(initial = emptyList())
 
     LazyColumn {
-        specificCurrencies.value.forEach { currency ->
+        currenciesWithChange.value.forEach { currency ->
             item {
                 CurrencyCard(
                     currencyCode = currency.currencyCode,
                     exchangeRate = currency.rate.toString(),
-                    isPositive = true,
-                    percentageChange = "+0.00%", // Placeholder
+                    isPositive = currency.isPositive,
+                    percentageChange = currency.percentageChange,
                     isFavorited = currency.isFavorited,
                     onFavoriteClick = {
                         viewModel.toggleFavoriteStatus(currency.currencyCode, !currency.isFavorited)
