@@ -1,56 +1,48 @@
 package com.example.ratemate.ui.screens
 
-import android.content.Context
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.material.Button
-import androidx.compose.material.Card
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.ratemate.R
 import com.example.ratemate.data.api.ExchangeRatesViewModel
 import com.example.ratemate.ui.components.CurrencyCard
 import com.murgupluoglu.flagkit.FlagKit
 import androidx.compose.ui.platform.LocalContext
-
-
-//import com.murgupluoglu.flagkit.Flagkit
-
+import androidx.compose.ui.Alignment
+import com.example.ratemate.ui.components.CustomText
+import com.example.ratemate.viewmodel.NewsViewModel
+import com.example.ratemate.ui.components.StyledNewsCard
 
 @Composable
-fun HomeScreen(viewModel: ExchangeRatesViewModel = viewModel()) {
+fun HomeScreen(
+    viewModel: ExchangeRatesViewModel = viewModel(),
+    newsViewModel: NewsViewModel = viewModel()
+) {
+    val newsItems = newsViewModel.newsItems.value
+
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        LaunchedEffect(Unit) {
-            viewModel.fetchAndSaveExchangeRates()
-        }
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
-            verticalArrangement = Arrangement.Top,
+            verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(20.dp))
-            Text(text="Popular")
+            CustomText(text = "Popular")
 
             val currencies = viewModel.currencies.collectAsState(initial = emptyList())
-            LazyColumn  {
+            LazyColumn {
                 currencies.value.forEach { currency ->
                     if (currency.currencyCode == "CAD" || currency.currencyCode == "USD" || currency.currencyCode == "CNY" || currency.currencyCode == "IDR") {
                         item {
@@ -77,15 +69,27 @@ fun HomeScreen(viewModel: ExchangeRatesViewModel = viewModel()) {
                     }
                 }
             }
+
+            // Add the news section using StyledNewsCard
+            LazyRow(
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                contentPadding = PaddingValues(horizontal = 16.dp)
+            ) {
+                items(newsItems) { item ->
+                    StyledNewsCard(newsItem = item)
+                }
+            }
         }
     }
 }
 
 fun calculatePercentageChange(rate: Double): String {
-    // Placeholder for actual percentage change calculation logic
-    // For now, let's assume it's "+1.00%"
     return "+1.00%"
 }
+
+
+
+
 
 fun currencyToCountryCode(currencyCode: String): String {
     return when (currencyCode) {

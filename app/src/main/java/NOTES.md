@@ -1,0 +1,6 @@
+# NEWS API KEY: 
+36ee12ca9c294eb489198e796e34939c
+
+# Exchange Rates API Key:
+63e09e12b955f8eb64f8b4c4bf8ae234
+
