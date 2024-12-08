@@ -9,6 +9,8 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface CurrencyDao {
 
+    // CURRENT
+
     @Query("SELECT * FROM currencies")
     fun getAllCurrencies(): Flow<List<CurrencyEntity>>
 
@@ -29,6 +31,7 @@ interface CurrencyDao {
 
     @Query("DELETE FROM currencies")
     suspend fun clearAll()
+
 
     // HISTORICAL
 

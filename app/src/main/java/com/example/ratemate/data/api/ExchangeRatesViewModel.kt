@@ -3,8 +3,6 @@ package com.example.ratemate.data.api
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.ratemate.data.database.CurrencyDatabase
 import com.example.ratemate.data.database.CurrencyEntity
@@ -19,34 +17,20 @@ class ExchangeRatesViewModel(application: Application) : AndroidViewModel(applic
 
     private val currencyDao = CurrencyDatabase.getDatabase(application).currencyDao()
     private val repository = CurrencyRepository(currencyDao)
-
-    // Expose all currencies as a Flow
-    val currencies: Flow<List<CurrencyEntity>> = repository.getAllCurrencies()
-
-    val favorites: Flow<List<CurrencyEntity>> = repository.getFavoritedCurrencies()
-
     private val specificCurrencyCodes = listOf("USD", "GBP", "JPY", "CAD", "CHF", "AUD", "CNY", "HKD", "NZD", "SEK", "KRW", "SGD", "NOK", "INR", "MXN")
 
+    // GET ALL CURRENCIES FROM BACKEND (CURRENT RATES)
+//    val currencies: Flow<List<CurrencyEntity>> = repository.getAllCurrencies()
+
+    // GET CURRENT RATES FOR SPECIFIC CURRENCIES (LISTED ABOVE)
     val currentRates = repository.getSpecificCurrencies(specificCurrencyCodes)
 
 
-    // Historical rates for specific currencies (1 day prior)
+    // HISTORICAL RATES FOR SPECIFIC(LISTED ABOVE) CURRENCIES (1 MONTH)
     private val historicalRates: Flow<List<HistoricalDataEntity>> = repository.getSpecificHistoricalRates(
         specificCurrencyCodes,
         getOneMonthPriorDate()
     )
-
-    // FAVORITES TOGGLE
-    fun toggleFavoriteStatus(currencyCode: String, isFavorited: Boolean) {
-        viewModelScope.launch {
-            repository.updateFavoriteStatus(currencyCode, isFavorited)
-        }
-    }
-
-    //
-    fun getSpecificCurrencies(currencyCodes: List<String>): Flow<List<CurrencyEntity>> {
-        return repository.getSpecificCurrencies(currencyCodes)
-    }
 
     // GET ALL CURRENT RATES (CALLED ON APP START-UP)
     fun fetchAndSaveExchangeRates() {
@@ -67,7 +51,6 @@ class ExchangeRatesViewModel(application: Application) : AndroidViewModel(applic
         }
     }
 
-
     // GET ALL HISTORICAL RATES (1D, 1WK, 1MO, 1YR) (CALLED ON APP START-UP)
     fun fetchAndSaveHistoricalData() {
         viewModelScope.launch {
@@ -76,10 +59,10 @@ class ExchangeRatesViewModel(application: Application) : AndroidViewModel(applic
                 val historicalData = mutableListOf<HistoricalDataEntity>()
 
                 for (date in dates) {
-                    // Fetch historical data for the date
+                    // FETCH HISTORICAL RATES FROM API
                     val response = ApiClient.apiService.getHistoricalExchangeRates(date, ExchangeRatesApi.ACCESS_KEY)
 
-                    // Iterate over the response rates and map them to HistoricalDataEntity
+                    // ITERATE OVER RESPONSE AND MAP TO DATA ENTITY
                     response.rates.forEach { (currencyCode, rate) ->
                         historicalData.add(
                             HistoricalDataEntity(
@@ -91,18 +74,15 @@ class ExchangeRatesViewModel(application: Application) : AndroidViewModel(applic
                     }
                 }
 
-                // Save all the historical data to the database
+                // SAVE HISTORICAL DATA TO DATABASE
                 repository.insertHistoricalData(historicalData)
             } catch (e: Exception) {
-                // Handle errors (e.g., log or display a message)
+                // Handle errors
             }
         }
     }
 
-
-
-
-    // Combine current and historical rates
+    // COMBINE & CALCULATE RATE DIFFERENCE
     val currenciesWithChange: Flow<List<CurrencyWithChange>> = combine(currentRates, historicalRates) { currentList, historicalList ->
         currentList.map { current ->
             val historicalRate = historicalList.find { it.currencyCode == current.currencyCode }?.rate
@@ -121,37 +101,10 @@ class ExchangeRatesViewModel(application: Application) : AndroidViewModel(applic
         }
     }
 
-    val historicalData = repository.getHistoricalDataForDate(getHistoricalDates()[0])
-
-    fun calculatePercentageChange(): Flow<List<CurrencyWithChange>> {
-        return combine(currencies, historicalData) { currentRates, historicalRates ->
-            currentRates.map { current ->
-                val previousRate = historicalRates.find { it.currencyCode == current.currencyCode }?.rate ?: 0.0
-                val percentageChange = if (previousRate != 0.0) {
-                    ((current.rate - previousRate) / previousRate) * 100
-                } else 0.0
-
-                CurrencyWithChange(
-                    currencyCode = current.currencyCode,
-                    rate = current.rate,
-                    isFavorited = current.isFavorited,
-                    isPositive = percentageChange >= 0,
-                    percentageChange = "%.2f%%".format(percentageChange)
-                )
-            }
+    // FAVORITES TOGGLE
+    fun toggleFavoriteStatus(currencyCode: String, isFavorited: Boolean) {
+        viewModelScope.launch {
+            repository.updateFavoriteStatus(currencyCode, isFavorited)
         }
-    }
-
-}
-
-
-class ExchangeRatesViewModelFactory(
-    private val application: Application
-) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(ExchangeRatesViewModel::class.java)) {
-            return ExchangeRatesViewModel(application) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

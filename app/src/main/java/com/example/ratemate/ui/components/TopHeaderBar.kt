@@ -13,13 +13,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.ratemate.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -28,13 +26,13 @@ fun TopHeaderBar(navController: NavController) {
         Box(
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(
+            Text( // TITLE TEXT
                 text = "RateMate",
                 textAlign = TextAlign.Center,
-                modifier = Modifier.align(Alignment.Center) // Use BoxScope's align
+                modifier = Modifier.align(Alignment.Center)
             )
         }
-    }, actions = {
+    }, actions = { // SETTINGS ICON
         Icon(imageVector = androidx.compose.material.icons.Icons.Default.Settings,
             contentDescription = "Settings",
             modifier = Modifier

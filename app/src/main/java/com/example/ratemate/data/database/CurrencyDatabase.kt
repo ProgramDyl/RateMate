@@ -3,7 +3,6 @@ package com.example.ratemate.data.database
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.ratemate.data.database.CurrencyEntity
 import android.content.Context
 
 @Database(entities = [CurrencyEntity::class, HistoricalDataEntity::class], version = 3, exportSchema = false)
@@ -22,7 +21,7 @@ abstract class CurrencyDatabase : RoomDatabase() {
                     CurrencyDatabase::class.java,
                     "currency_database"
                 )
-                    .fallbackToDestructiveMigration() // Automatically recreates the database
+                    .fallbackToDestructiveMigration() // THIS IS ONLY REQUIRED FOR DEVELOPMENT WITH DB CHANGES (can remove in future.. or not)
                     .build()
                 INSTANCE = instance
                 instance

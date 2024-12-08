@@ -1,12 +1,10 @@
 package com.example.ratemate.ui.navigation
 
-import android.app.Application
 import android.util.Log
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavType
 import androidx.navigation.compose.rememberNavController
 import com.example.ratemate.ui.components.BottomNavBar
@@ -15,7 +13,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
 import com.example.ratemate.ui.components.TopHeaderBar
-import com.example.ratemate.ui.navigation.BottomNavItem
 import com.example.ratemate.ui.screens.HomeScreen
 import com.example.ratemate.ui.screens.CurrencyScreen
 import com.example.ratemate.ui.screens.FavoritesScreen
@@ -55,7 +52,7 @@ fun RateMateNavHost() {
             startDestination = "bottom_navigation",
             modifier = Modifier.padding(innerPadding)
         ) {
-            // Bottom Navigation Graph
+            // BOTTOM NAV GRAPH (COULD BE PUT IN SEPARATE FILE FOR CLEANLINESS)
             navigation(startDestination = BottomNavItem.Home.route, route = "bottom_navigation") {
                 composable(BottomNavItem.Home.route) { HomeScreen() }
                 composable(BottomNavItem.Currency.route) {
@@ -67,10 +64,10 @@ fun RateMateNavHost() {
                 composable(BottomNavItem.Convert.route) { ConvertScreen() }
             }
 
-            // Settings Screen
+            // SETTINGS SCREEN
             composable("settings") { SettingsScreen() }
 
-            // Currency Data Screen
+            // CURRENCY DATA SCREEN
             composable(
                 route = "currencyData/{currencyCode}",
                 arguments = listOf(navArgument("currencyCode") { type = NavType.StringType })

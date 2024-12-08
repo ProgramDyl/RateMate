@@ -5,6 +5,7 @@ package com.example.ratemate.data.api
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+// BUILDS THE CLIENT FOR USE ELSEWHERE
 object ApiClient {
     private const val BASE_URL = "https://api.exchangeratesapi.io/v1/"
 
