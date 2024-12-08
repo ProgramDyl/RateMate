@@ -18,6 +18,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ratemate.R
+import com.example.ratemate.data.database.currencyToCountryCode
+import com.murgupluoglu.flagkit.FlagKit
 
 @Composable
 fun CurrencyCard(
@@ -30,11 +32,11 @@ fun CurrencyCard(
     onCurrencyClick: () -> Unit // Added to handle card click
 ) {
     val context = LocalContext.current
-    val flagResource = context.resources.getIdentifier(
-        "flag_${currencyCode.lowercase()}",
-        "drawable",
-        context.packageName
-    )
+    val flagResource = FlagKit.getResId(context, currencyToCountryCode(currencyCode))
+    val resolvedFlagResource = if (flagResource != 0) flagResource else R.drawable.flag_placeholder
+
+
+
 
     Row(
         modifier = Modifier
@@ -47,7 +49,7 @@ fun CurrencyCard(
     ) {
         // FLAG
         Image(
-            painter = painterResource(id = if (flagResource != 0) flagResource else R.drawable.flag_placeholder),
+            painter = painterResource(id = resolvedFlagResource),
             contentDescription = "$currencyCode flag",
             modifier = Modifier
                 .size(40.dp)

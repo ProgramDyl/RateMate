@@ -43,7 +43,7 @@ interface CurrencyDao {
 
     @Query("SELECT * FROM historical_data WHERE currencyCode IN (:currencyCodes) AND date = :date")
     fun getSpecificHistoricalRates(
-        currencyCodes: List<String>,
+        currencyCodes: String,
         date: String
     ): Flow<List<HistoricalDataEntity>>
 

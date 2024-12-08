@@ -29,7 +29,10 @@ fun TopHeaderBar(navController: NavController) {
             Text( // TITLE TEXT
                 text = "RateMate",
                 textAlign = TextAlign.Center,
-                modifier = Modifier.align(Alignment.Center)
+                fontSize = androidx.compose.ui.unit.TextUnit.Unspecified, // FONT SIZE
+                fontWeight = androidx.compose.ui.text.font.FontWeight.Bold, // FONT WEIGHT
+                modifier = Modifier.align(Alignment.Center),
+                color = Color.White // TEXT COLOUR
             )
         }
     }, actions = { // SETTINGS ICON
