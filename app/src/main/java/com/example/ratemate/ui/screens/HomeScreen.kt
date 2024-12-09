@@ -16,15 +16,14 @@ import com.example.ratemate.ui.components.CurrencyCard
 import com.murgupluoglu.flagkit.FlagKit
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.Alignment
+import androidx.navigation.NavHostController
 import com.example.ratemate.ui.components.CustomText
 import com.example.ratemate.viewmodel.NewsViewModel
 import com.example.ratemate.ui.components.StyledNewsCard
+import com.example.ratemate.ui.navigation.RateMateNavHost
 
 @Composable
-fun HomeScreen(
-    viewModel: ExchangeRatesViewModel = viewModel(),
-    newsViewModel: NewsViewModel = viewModel()
-) {
+fun HomeScreen(navController: NavHostController, viewModel: ExchangeRatesViewModel = viewModel(), newsViewModel: NewsViewModel = viewModel()) {
     val newsItems = newsViewModel.newsItems.value
 
     Box(
@@ -44,7 +43,7 @@ fun HomeScreen(
             val currencies = viewModel.currencies.collectAsState(initial = emptyList())
             LazyColumn {
                 currencies.value.forEach { currency ->
-                    if (currency.currencyCode == "CAD" || currency.currencyCode == "USD" || currency.currencyCode == "CNY" || currency.currencyCode == "IDR") {
+                    if (currency.currencyCode in listOf("CAD", "USD", "CNY", "IDR")) {
                         item {
                             val context = LocalContext.current
                             val flagResource = FlagKit.getResId(context, currencyToCountryCode(currency.currencyCode))
@@ -59,10 +58,8 @@ fun HomeScreen(
                                 percentageChange = percentageChange,
                                 isFavorited = currency.isFavorited,
                                 onFavoriteClick = {
-                                    viewModel.toggleFavoriteStatus(
-                                        currency.currencyCode,
-                                        !currency.isFavorited
-                                    )
+                                    // Navigate to CurrencyDataScreen with currency code
+                                    navController.navigate("currencyData/${currency.currencyCode}")
                                 }
                             )
                         }
@@ -82,6 +79,9 @@ fun HomeScreen(
         }
     }
 }
+
+
+
 
 fun calculatePercentageChange(rate: Double): String {
     return "+1.00%"
