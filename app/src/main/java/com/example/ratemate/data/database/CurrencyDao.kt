@@ -10,13 +10,11 @@ import kotlinx.coroutines.flow.Flow
 interface CurrencyDao {
 
     // CURRENT
-
     @Query("SELECT * FROM currencies")
     fun getAllCurrencies(): Flow<List<CurrencyEntity>>
 
     @Query("SELECT * FROM currencies WHERE isFavorited = 1")
     fun getFavoritedCurrencies(): Flow<List<CurrencyEntity>>
-
     @Query("SELECT * FROM currencies WHERE currencyCode IN (:currencyCodes)")
     fun getSpecificCurrencies(currencyCodes: List<String>): Flow<List<CurrencyEntity>>
 
