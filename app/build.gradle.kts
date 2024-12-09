@@ -64,6 +64,7 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.play.services.mlkit.text.recognition.common)
+    implementation(libs.accessibility.test.framework)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -118,6 +119,16 @@ dependencies {
 
     //news
     implementation("io.coil-kt:coil-compose:2.0.0")
+
+    //charts
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
+//    implementation("com.github.tehras:charts:-0.2.4-alpha")
+
+    //testing dependencies
+    testImplementation("junit:junit:4.13.2")
+    androidTestImplementation("androidx.test.ext:junit:1.2.1")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
 
 }
 

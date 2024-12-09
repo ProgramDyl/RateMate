@@ -1,4 +1,4 @@
-package com.example.ratemate.ui.components
+package com.example.ratemate.ui.components.styleSheets
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button

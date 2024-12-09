@@ -1,26 +1,18 @@
 package com.example.ratemate.ui.navigation
 
-import android.app.Application
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
+import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
-import androidx.navigation.compose.rememberNavController
-import com.example.ratemate.ui.components.BottomNavBar
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.navigation
+import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.ratemate.ui.components.BottomNavBar
 import com.example.ratemate.ui.components.TopHeaderBar
-import com.example.ratemate.ui.navigation.BottomNavItem
-import com.example.ratemate.ui.screens.HomeScreen
-import com.example.ratemate.ui.screens.CurrencyScreen
-import com.example.ratemate.ui.screens.FavoritesScreen
-import com.example.ratemate.ui.screens.ConvertScreen
-import com.example.ratemate.ui.screens.SettingsScreen
-import com.example.ratemate.ui.screens.CurrencyDataScreen
+import com.example.ratemate.ui.screens.*
 
 @Composable
 fun RateMateNavHost() {
@@ -32,24 +24,22 @@ fun RateMateNavHost() {
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = "home",
+            startDestination = BottomNavItem.Home.route,
             modifier = Modifier.padding(innerPadding)
         ) {
-            composable("home") { HomeScreen(navController) }
+            composable(BottomNavItem.Home.route) { HomeScreen(navController) }
+            composable(BottomNavItem.Currency.route) { CurrencyScreen(navController, viewModel = viewModel()) }
+            composable(BottomNavItem.Favorites.route) { FavoritesScreen(navController, viewModel = viewModel()) }
+            composable(BottomNavItem.Convert.route) { ConvertScreen(navController, viewModel = viewModel()) }
             composable(
                 route = "currencyData/{currencyCode}",
                 arguments = listOf(navArgument("currencyCode") { type = NavType.StringType })
             ) { backStackEntry ->
                 val currencyCode = backStackEntry.arguments?.getString("currencyCode")
                 if (currencyCode != null) {
-                    CurrencyDataScreen(currencyCode = currencyCode)
+                    CurrencyDataScreen(navController = navController, currencyCode = currencyCode, viewModel = viewModel())
                 }
             }
         }
     }
 }
-
-
-
-
-

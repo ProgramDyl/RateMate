@@ -3,14 +3,13 @@ package com.example.ratemate.ui.navigation
 import android.app.Application
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.example.ratemate.ui.navigation.BottomNavItem
 import com.example.ratemate.ui.screens.HomeScreen
-import com.example.ratemate.ui.screens.CurrencyScreen
 import com.example.ratemate.ui.screens.FavoritesScreen
 import com.example.ratemate.ui.screens.ConvertScreen
 import com.example.ratemate.ui.screens.CurrencyDataScreen
@@ -28,10 +27,10 @@ fun RateMateNavGraph(navController: NavHostController) {
             HomeScreen(navController = navController)
         }
         composable(route = BottomNavItem.Favorites.route) {
-            FavoritesScreen()
+            FavoritesScreen(navController)
         }
         composable(route = BottomNavItem.Convert.route) {
-            ConvertScreen()
+            ConvertScreen(navController, viewModel())
         }
         composable(
             route = "currencyData/{currencyCode}",
@@ -39,10 +38,11 @@ fun RateMateNavGraph(navController: NavHostController) {
         ) { backStackEntry ->
             val currencyCode = backStackEntry.arguments?.getString("currencyCode")
             if (currencyCode != null) {
-                CurrencyDataScreen(currencyCode = currencyCode)
+                CurrencyDataScreen(navController = navController, currencyCode = currencyCode)
             }
         }
     }
 }
+
 
 

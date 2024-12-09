@@ -1,23 +1,20 @@
 package com.example.ratemate.ui.screens
 
-import android.app.Application
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import com.example.ratemate.R
 import com.example.ratemate.data.api.ExchangeRatesViewModel
-import com.example.ratemate.data.api.ExchangeRatesViewModelFactory
 import com.example.ratemate.ui.components.CurrencyCard
 
 @Composable
-fun FavoritesScreen(viewModel: ExchangeRatesViewModel = viewModel()) {
+fun FavoritesScreen(
+    navController: NavHostController,
+    viewModel: ExchangeRatesViewModel = viewModel()
+) {
     val favorites = viewModel.favorites.collectAsState(initial = emptyList())
 
     LazyColumn {
