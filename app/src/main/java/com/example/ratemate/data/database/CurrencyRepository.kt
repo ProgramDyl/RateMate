@@ -56,4 +56,6 @@ class CurrencyRepository(private val currencyDao: CurrencyDao) {
         currencyDao.deleteOldData(oldestDate)
     }
 
+
+
 }
