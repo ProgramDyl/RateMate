@@ -1,18 +1,26 @@
 package com.example.ratemate.ui.screens
 
+import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Button
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.ButtonDefaults
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Switch
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,6 +33,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 
 @Composable
 fun SettingsScreen() {
@@ -38,6 +48,22 @@ fun SettingsScreen() {
 
     // Local context for notifications
     val context = LocalContext.current
+
+    // Permission state for notifications
+    var hasNotificationPermission by remember {
+        mutableStateOf(
+            ContextCompat.checkSelfPermission(
+                context,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) == PackageManager.PERMISSION_GRANTED
+        )
+    }
+
+    // Launcher for requesting the permission
+    val requestPermissionLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            hasNotificationPermission = isGranted
+        }
 
     // Create a notification channel (required for Android 8+)
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -53,6 +79,7 @@ fun SettingsScreen() {
         notificationManager.createNotificationChannel(channel)
     }
 
+    // UI Layout
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -75,19 +102,20 @@ fun SettingsScreen() {
                 Switch(
                     checked = switch1State,
                     onCheckedChange = { isEnabled ->
-                        switch1State = isEnabled
-                        if (isEnabled) {
-                            // Trigger a notification
-                            val notificationManager =
-                                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                        if (isEnabled && !hasNotificationPermission) {
+                            // Request permission
+                            requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                        } else if (isEnabled && hasNotificationPermission) {
+                            // Show notification
                             val notification = NotificationCompat.Builder(context, "rate_mate_notifications")
                                 .setSmallIcon(android.R.drawable.ic_dialog_info)
                                 .setContentTitle("Notifications Enabled")
                                 .setContentText("You have enabled notifications for RateMate!")
                                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                                 .build()
-                            notificationManager.notify(1, notification)
+                            NotificationManagerCompat.from(context).notify(1, notification)
                         }
+                        switch1State = isEnabled
                     }
                 )
             }

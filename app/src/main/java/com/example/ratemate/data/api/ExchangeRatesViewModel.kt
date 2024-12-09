@@ -101,6 +101,9 @@ class ExchangeRatesViewModel(application: Application) : AndroidViewModel(applic
         }
     }
 
+
+
+
     // FAVORITES TOGGLE
     fun toggleFavoriteStatus(currencyCode: String, isFavorited: Boolean) {
         viewModelScope.launch {
